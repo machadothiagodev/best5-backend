@@ -25,8 +25,8 @@ public class UserController {
 	}
 
 	@PostMapping("/signup")
-	public AuthDto signup(@Validated @RequestBody NewUserDto newUserDto) {
-		return this.userManager.signup(newUserDto);
+	public void signup(@Validated @RequestBody NewUserDto newUserDto) {
+		this.userManager.signup(newUserDto);
 	}
 
 }

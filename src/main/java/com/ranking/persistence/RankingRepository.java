@@ -12,8 +12,6 @@ import com.ranking.persistence.entity.Ranking;
 @Repository
 public interface RankingRepository extends JpaRepository<Ranking, Long> {
 
-	List<Ranking> findByOrderByIdDesc();
-
 	@Query("SELECT DISTINCT(i.ranking) FROM RankingItem AS i WHERE UPPER(i.name) LIKE %:name% OR UPPER(i.ranking.name) LIKE %:name%")
 	List<Ranking> findByName(@Param("name") String name);
 

@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -36,7 +35,6 @@ public class Ranking implements Comparable<Ranking> {
 	private User createdBy;
 
 	@OneToMany(mappedBy = "ranking", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy("votes DESC")
 	private List<RankingItem> items;
 
 	public Long getId() {
@@ -80,7 +78,7 @@ public class Ranking implements Comparable<Ranking> {
 	}
 
 	public Integer getTotalVotes() {
-		return this.items.stream().map(item -> item.getVotes().size()).reduce(0, Integer::sum);
+		return this.items.stream().map(RankingItem::getTotalVotes).reduce(0, Integer::sum);
 	}
 
 	@Override

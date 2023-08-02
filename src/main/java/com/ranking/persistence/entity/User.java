@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,6 +35,7 @@ public class User implements UserDetails {
 	private String gender;
 
 	@Column(name = "birthday_date")
+	@Temporal(TemporalType.DATE)
 	private Date birthdayDate;
 
 	@Column(name = "password")
@@ -40,6 +43,9 @@ public class User implements UserDetails {
 
 	@Column(name = "create_date")
 	private Date createdDate;
+
+	@Column(name = "active")	
+	private Boolean active = Boolean.FALSE;
 
 	@OneToMany(mappedBy = "createdBy")
 	private List<Ranking> rankings;
@@ -101,6 +107,14 @@ public class User implements UserDetails {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public List<Ranking> getRankings() {

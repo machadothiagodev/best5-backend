@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -29,15 +30,22 @@ public class RankingManager {
 	private RankingRepository rankingRepository;
 
 	public List<Ranking> getRankings(String name) {
+		if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+			System.out.println(user.getEmail());
+		}
+
 		List<Ranking> rankings = null;
 
 		if (name == null) {
-			rankings = this.rankingRepository.findByOrderByIdDesc();
+			rankings = this.rankingRepository.findAll();
 		} else {
 			rankings = this.rankingRepository.findByName(name.toUpperCase());
 		}
 
 		Collections.sort(rankings);
+		rankings.forEach(ranking -> Collections.sort(ranking.getItems()));
+
 		return rankings;
 	}
 
@@ -45,7 +53,10 @@ public class RankingManager {
 		Optional<Ranking> optional = this.rankingRepository.findById(rankingId);
 
 		if (optional.isPresent()) {
-			return optional.get();
+			Ranking ranking = optional.get();
+			Collections.sort(ranking.getItems());
+
+			return ranking;
 		}
 
 		throw new EntityNotFoundException(String.format("Ranking #%s does not exist", rankingId));

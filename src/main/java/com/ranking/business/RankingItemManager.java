@@ -34,6 +34,8 @@ public class RankingItemManager {
 
 		rankingItem.setRanking(this.rankingManager.getRanking(rankingId));
 		rankingItem.setCreatedBy((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		rankingItem.setCreatedDate(Calendar.getInstance().getTime());
+		rankingItem.getVotes().add(new RankingItemVote(rankingItem, rankingItem.getCreatedDate()));
 
 		return this.rankingItemRepository.save(rankingItem);
 	}

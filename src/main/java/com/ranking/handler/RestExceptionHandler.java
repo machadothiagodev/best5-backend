@@ -13,16 +13,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ranking.exception.AuthenticationException;
+import com.ranking.exception.OneTimePasswordException;
 import com.ranking.exception.UserExistsException;
+import com.ranking.exception.UserInactiveException;
+import com.ranking.exception.UserNotFoundException;
 
 @ControllerAdvice
 public class RestExceptionHandler {
 
 	@ResponseBody
 	@ExceptionHandler(value = MethodArgumentNotValidException.class)
-	public ResponseEntity<String> handleMethodArgumentNotValidException(HttpServletRequest req, MethodArgumentNotValidException ex) {
+	public ResponseEntity<MessageError> handleMethodArgumentNotValidException(HttpServletRequest req, MethodArgumentNotValidException ex) {
 		String mensagem = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(", "));
-		return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new MessageError(mensagem), HttpStatus.BAD_REQUEST);
 	}
 
 	@ResponseBody
@@ -32,9 +35,15 @@ public class RestExceptionHandler {
 	}
 
 	@ResponseBody
-	@ExceptionHandler(value = UserExistsException.class)
-	public ResponseEntity<MessageError> handleUserExistsException(HttpServletRequest req, UserExistsException ex) {
+	@ExceptionHandler(value = { UserExistsException.class, UserNotFoundException.class, OneTimePasswordException.class })
+	public ResponseEntity<MessageError> handleUserException(HttpServletRequest req, RuntimeException ex) {
 		return new ResponseEntity<>(new MessageError(ex.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
+	}
+
+	@ResponseBody
+	@ExceptionHandler(value = { UserInactiveException.class })
+	public ResponseEntity<MessageError> handleUUserInactiveException(HttpServletRequest req, UserInactiveException ex) {
+		return new ResponseEntity<>(new MessageError(ex.getLocalizedMessage()), HttpStatus.NOT_ACCEPTABLE); // 406
 	}
 
 	private class MessageError {

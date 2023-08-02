@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.ranking.business.mapper.UserMapper;
 import com.ranking.exception.AuthenticationException;
 import com.ranking.exception.UserExistsException;
+import com.ranking.exception.UserInactiveException;
+import com.ranking.exception.UserNotFoundException;
 import com.ranking.persistence.UserRepository;
 import com.ranking.persistence.entity.User;
 import com.ranking.presentation.dto.AuthDto;
@@ -36,6 +36,9 @@ public class UserManager {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired	
+	private OneTimePasswordManager oneTimePasswordManager;
+
 	public User getUser(String email) {
 		Optional<User> optional = this.userRepository.findById(email);
 
@@ -43,7 +46,7 @@ public class UserManager {
 			return optional.get();
 		}
 
-		throw new EntityNotFoundException(String.format("User #%s does not exist", email));
+		throw new UserNotFoundException("User %s does not exist", email);
 	}
 
 	public AuthDto login(UserLoginDto userLoginDto) {
@@ -52,7 +55,12 @@ public class UserManager {
 		if (optional.isPresent()) {
 			User user = optional.get();
 
-			if (userLoginDto.getPassword().equals(user.getPassword())) {
+			if (Boolean.FALSE.equals(user.getActive())) {
+				this.oneTimePasswordManager.send(user.getEmail());
+				throw new UserInactiveException();
+			}
+
+			if (new BCryptPasswordEncoder().matches(userLoginDto.getPassword(), user.getPassword())) {
 				return this.getAuth(user);
 			}
 
@@ -62,7 +70,7 @@ public class UserManager {
 		throw new AuthenticationException("User %s not found", userLoginDto.getEmail());
 	}
 
-	public AuthDto signup(NewUserDto newUserDto) {
+	public void signup(NewUserDto newUserDto) {
 		Optional<User> optional = this.userRepository.findById(newUserDto.getEmail());
 
 		if (optional.isPresent()) {
@@ -70,10 +78,14 @@ public class UserManager {
 		}
 
 		User user = this.userRepository.save(this.userMapper.convertToEntity(newUserDto));
-		return this.getAuth(user);
+		this.oneTimePasswordManager.send(user.getEmail());
 	}
 
-	private AuthDto getAuth(User user) {
+	public User save(User user) {
+		return this.userRepository.save(user);
+	}
+
+	public AuthDto getAuth(User user) {
 		Date expirationDate = this.getTokenExpiration();
 
 		return new AuthDto(
@@ -87,7 +99,7 @@ public class UserManager {
 
 	private Date getTokenExpiration() {
 		Calendar tokenExpiration = Calendar.getInstance();
-		tokenExpiration.add(Calendar.HOUR_OF_DAY, 1);
+		tokenExpiration.add(Calendar.DAY_OF_MONTH, 1);
 
 		return tokenExpiration.getTime();
 	}
