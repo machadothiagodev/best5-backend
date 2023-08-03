@@ -9,12 +9,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class NewUserDto {
 
-	private @NotEmpty(message = "Field email is required") String email;
-	private @NotEmpty(message = "Field firstName is required") String firstName;
-	private @NotEmpty(message = "Field lastName is required") String lastName;
-	private @NotEmpty(message = "Field gender is required") String gender;
-	private @NotNull(message = "Field birthdayDate is required") @JsonFormat(pattern = "dd/MM/yyyy") Date birthdayDate;
-	private @NotEmpty(message = "Field password is required") String password;
+	@NotEmpty(message = "Field email is required")
+	private String email;
+
+	@NotEmpty(message = "Field firstName is required")
+	private String firstName;
+
+	@NotEmpty(message = "Field lastName is required")
+	private String lastName;
+
+	@NotEmpty(message = "Field gender is required")
+	private String gender;
+
+	@NotNull(message = "Field birthdayDate is required")
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private Date birthdayDate;
+
+	@NotEmpty(message = "Field password is required")
+	private String password;
 
 	public String getEmail() {
 		return email;

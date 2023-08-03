@@ -4,8 +4,11 @@ import javax.validation.constraints.NotEmpty;
 
 public class UserLoginDto {
 
-	private @NotEmpty(message = "Field email is required") String email;
-	private @NotEmpty(message = "Field password is required") String password;
+	@NotEmpty(message = "Field email is required")
+	private String email;
+
+	@NotEmpty(message = "Field password is required")
+	private String password;
 
 	public String getEmail() {
 		return email;

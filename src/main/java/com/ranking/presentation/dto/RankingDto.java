@@ -8,9 +8,15 @@ import javax.validation.constraints.Size;
 public class RankingDto {
 
 	private Long id;
-	private @NotEmpty(message = "Campo name é obrigatório") String name;
+
+	@NotEmpty(message = "Field name is required")
+	private String name;
+
 	private Integer totalVotes;
-	private @NotEmpty(message = "Campo items é obrigatório") @Size(min = 3, message = "Campo items deve conter pelo menos 3 elementos") List<RankingItemDto> items;
+
+	@NotEmpty(message = "Field items is required")
+	@Size(min = 3, message = "Field items must have at least 3 elements")
+	private List<RankingItemDto> items;
 
 	public Long getId() {
 		return id;

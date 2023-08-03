@@ -5,7 +5,10 @@ import javax.validation.constraints.NotEmpty;
 public class RankingItemDto {
 
 	private Long id;
-	private @NotEmpty(message = "Campo name é obrigatório") String name;
+
+	@NotEmpty(message = "Field name is required")
+	private String name;
+
 	private Integer votes;
 
 	public Long getId() {
