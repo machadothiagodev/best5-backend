@@ -18,6 +18,8 @@ public class RankingDto {
 	@Size(min = 3, message = "Field items must have at least 3 elements")
 	private List<RankingItemDto> items;
 
+	private BannerDto banner;
+
 	public Long getId() {
 		return id;
 	}
@@ -48,6 +50,14 @@ public class RankingDto {
 
 	public void setItems(List<RankingItemDto> items) {
 		this.items = items;
+	}
+
+	public BannerDto getBanner() {
+		return banner;
+	}
+
+	public void setBanner(BannerDto banner) {
+		this.banner = banner;
 	}
 
 }

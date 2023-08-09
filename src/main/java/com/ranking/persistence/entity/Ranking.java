@@ -91,6 +91,14 @@ public class Ranking implements Comparable<Ranking> {
 		return this.items.stream().map(RankingItem::getTotalVotes).reduce(0, Integer::sum);
 	}
 
+	public List<Banner> getBanners() {
+		return banners;
+	}
+
+	public void setBanners(List<Banner> banners) {
+		this.banners = banners;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

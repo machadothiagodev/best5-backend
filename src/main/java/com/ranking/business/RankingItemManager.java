@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,7 +39,6 @@ public class RankingItemManager {
 		return this.rankingItemRepository.save(rankingItem);
 	}
 
-	@Transactional
 	public void vote(Long rankingItemId) {
 		RankingItem item = this.getRankingItem(rankingItemId);
 		item.getVotes().add(new RankingItemVote(item, Calendar.getInstance().getTime()));

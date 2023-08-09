@@ -16,7 +16,7 @@ import com.ranking.business.RankingManager;
 import com.ranking.business.mapper.RankingMapper;
 import com.ranking.presentation.dto.RankingDto;
 
-@RestController()
+@RestController
 @RequestMapping("api/rankings")
 public class RankingController {
 
