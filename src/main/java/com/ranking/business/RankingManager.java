@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,19 +30,26 @@ public class RankingManager {
 	@Autowired
 	private RankingRepository rankingRepository;
 
-	public List<Ranking> getRankings(String name) {
-		if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
-			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
-			System.out.println(user.getEmail());
-		}
+	public List<Ranking> getRankings(Boolean loggedin) {
+		List<Ranking> rankings = new ArrayList<>();
 
-		List<Ranking> rankings = null;
-
-		if (name == null) {
-			rankings = this.rankingRepository.findAll();
+		if (BooleanUtils.isTrue(loggedin)) {
+			if (SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken) {
+				User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+				rankings = this.rankingRepository.findByEmail(user.getEmail());
+			}
 		} else {
-			rankings = this.rankingRepository.findByName(name.toUpperCase());
+			rankings = this.rankingRepository.findAll();
+			Collections.sort(rankings);
 		}
+
+		rankings.forEach(ranking -> Collections.sort(ranking.getItems()));
+
+		return rankings;
+	}	
+
+	public List<Ranking> searchRankings(String name) {
+		List<Ranking> rankings = this.rankingRepository.findByName(name.toUpperCase());
 
 		Collections.sort(rankings);
 		rankings.forEach(ranking -> Collections.sort(ranking.getItems()));

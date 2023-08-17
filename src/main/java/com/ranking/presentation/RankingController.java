@@ -27,8 +27,13 @@ public class RankingController {
 	private RankingMapper rankingMapper;
 
 	@GetMapping
-	public List<RankingDto> getRankings(@RequestParam(name = "search", required = false) String search) {
-		return this.rankingMapper.convertoToDtoList(this.rankingManager.getRankings(search));
+	public List<RankingDto> getRankings(@RequestParam(name = "loggedin", required = false) Boolean loggedin) {
+		return this.rankingMapper.convertoToDtoList(this.rankingManager.getRankings(loggedin));
+	}
+
+	@GetMapping("/search")
+	public List<RankingDto> searchRankings(@RequestParam(name = "name") String name) {
+		return this.rankingMapper.convertoToDtoList(this.rankingManager.searchRankings(name));
 	}
 
 	@GetMapping("/{rankingId}")

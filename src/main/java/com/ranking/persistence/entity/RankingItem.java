@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -41,6 +42,9 @@ public class RankingItem implements Comparable<RankingItem> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ranking_id")
 	private Ranking ranking;
+
+	@ManyToMany(mappedBy = "rankingItems")
+	private List<Logo> logos;
 
 	public Long getId() {
 		return id;
@@ -91,6 +95,14 @@ public class RankingItem implements Comparable<RankingItem> {
 
 	public void setRanking(Ranking ranking) {
 		this.ranking = ranking;
+	}
+
+	public List<Logo> getLogos() {
+		return logos;
+	}
+
+	public void setLogos(List<Logo> logos) {
+		this.logos = logos;
 	}
 
 	public Integer getTotalVotes() {

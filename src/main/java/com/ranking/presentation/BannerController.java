@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ranking.business.BannerManager;
+import com.ranking.business.mapper.BannerMapper;
+import com.ranking.presentation.dto.BannerDto;
 import com.ranking.presentation.dto.NewBannerDto;
 
 @RestController
@@ -19,14 +21,14 @@ import com.ranking.presentation.dto.NewBannerDto;
 public class BannerController {
 
 	@Autowired
+	private BannerMapper bannerMapper;
+
+	@Autowired
 	private BannerManager bannerManager;
 
 	@PostMapping
-	public void createBanner(@Valid @RequestPart NewBannerDto banner, @RequestPart MultipartFile image) {
-		System.out.println("Uploaded File: ");
-		System.out.println("Type : " + image.getContentType());
-		System.out.println("Name : " + image.getOriginalFilename());
-		System.out.println("Size : " + image.getSize());
+	public BannerDto createBanner(@Valid @RequestPart("banner") NewBannerDto newBannerDto, @RequestPart("image") MultipartFile image) {
+		return this.bannerMapper.convertToDto(this.bannerManager.createBanner(newBannerDto, image));
 	}
 
 	@PutMapping("/{id}/click")

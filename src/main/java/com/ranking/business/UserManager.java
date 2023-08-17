@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class UserManager {
 		if (optional.isPresent()) {
 			User user = optional.get();
 
-			if (Boolean.FALSE.equals(user.getActive())) {
+			if (BooleanUtils.isFalse(user.getActive())) {
 				this.oneTimePasswordManager.send(user.getEmail());
 				throw new UserInactiveException();
 			}

@@ -24,7 +24,7 @@ public class WebSecurityConfig {
 		return http.csrf(AbstractHttpConfigurer::disable)
 				.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.exceptionHandling(c -> c.authenticationEntryPoint(new CustomEntryPoint()))
-				.authorizeHttpRequests(authorize -> authorize.antMatchers(HttpMethod.POST, "/api/rankings", "/api/rankings/**").authenticated())
+				.authorizeHttpRequests(authorize -> authorize.antMatchers(HttpMethod.POST, "/api/rankings", "/api/rankings/**", "/api/banners", "/api/logos").authenticated())
 				.addFilterBefore(new AuthTokenFilter(userManager), UsernamePasswordAuthenticationFilter.class).build();
 	}
 

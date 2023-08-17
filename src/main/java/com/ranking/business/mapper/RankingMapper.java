@@ -35,12 +35,12 @@ public abstract class RankingMapper {
 				return this.bannerMapper.convertToDto(optional.get());
 			}
 		}
-
 		return null;
 	}
 
 	@Mapping(target = "createdDate", expression = "java(Calendar.getInstance().getTime())")
 	@Mapping(target = "createdBy", ignore = true)
+	@Mapping(target = "banners", ignore = true)
 	public abstract Ranking convertToEntity(RankingDto rankingDto);
 
 	@AfterMapping

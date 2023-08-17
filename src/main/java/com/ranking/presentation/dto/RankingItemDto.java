@@ -11,6 +11,8 @@ public class RankingItemDto {
 
 	private Integer votes;
 
+	private LogoDto logo;
+
 	public Long getId() {
 		return id;
 	}
@@ -33,6 +35,14 @@ public class RankingItemDto {
 
 	public void setVotes(Integer votes) {
 		this.votes = votes;
+	}
+
+	public LogoDto getLogo() {
+		return logo;
+	}
+
+	public void setLogo(LogoDto logo) {
+		this.logo = logo;
 	}
 
 }

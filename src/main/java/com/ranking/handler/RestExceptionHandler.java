@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ranking.exception.AuthenticationException;
+import com.ranking.exception.FileNotFoundException;
 import com.ranking.exception.OneTimePasswordException;
 import com.ranking.exception.UserExistsException;
 import com.ranking.exception.UserInactiveException;
@@ -42,8 +43,14 @@ public class RestExceptionHandler {
 
 	@ResponseBody
 	@ExceptionHandler(value = { UserInactiveException.class })
-	public ResponseEntity<MessageError> handleUUserInactiveException(HttpServletRequest req, UserInactiveException ex) {
+	public ResponseEntity<MessageError> handleUserInactiveException(HttpServletRequest req, UserInactiveException ex) {
 		return new ResponseEntity<>(new MessageError(ex.getLocalizedMessage()), HttpStatus.NOT_ACCEPTABLE); // 406
+	}
+
+	@ResponseBody
+	@ExceptionHandler(value = { FileNotFoundException.class })
+	public ResponseEntity<MessageError> handleFileNotFoundException(HttpServletRequest req, FileNotFoundException ex) {
+		return new ResponseEntity<>(new MessageError(ex.getLocalizedMessage()), HttpStatus.NOT_FOUND);
 	}
 
 	private class MessageError {

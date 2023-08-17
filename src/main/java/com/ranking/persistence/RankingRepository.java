@@ -15,4 +15,7 @@ public interface RankingRepository extends JpaRepository<Ranking, Long> {
 	@Query("SELECT DISTINCT(i.ranking) FROM RankingItem AS i WHERE UPPER(i.name) LIKE %:name% OR UPPER(i.ranking.name) LIKE %:name%")
 	List<Ranking> findByName(@Param("name") String name);
 
+	@Query("SELECT r FROM Ranking AS r WHERE r.createdBy.email = :email ORDER BY id DESC")
+	List<Ranking> findByEmail(@Param("email") String email);
+
 }

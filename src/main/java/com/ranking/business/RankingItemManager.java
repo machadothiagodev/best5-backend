@@ -44,7 +44,7 @@ public class RankingItemManager {
 		item.getVotes().add(new RankingItemVote(item, Calendar.getInstance().getTime()));
 	}
 
-	private RankingItem getRankingItem(Long rankingItemId) {
+	public RankingItem getRankingItem(Long rankingItemId) {
 		Optional<RankingItem> optional = this.rankingItemRepository.findById(rankingItemId);
 
 		if (optional.isPresent()) {

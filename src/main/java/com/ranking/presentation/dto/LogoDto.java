@@ -1,6 +1,6 @@
 package com.ranking.presentation.dto;
 
-public class BannerDto {
+public class LogoDto {
 
 	private Long id;
 	private String fileName;

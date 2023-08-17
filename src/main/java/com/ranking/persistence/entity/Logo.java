@@ -14,10 +14,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "banner")
-public class Banner {
+@Table(name = "logo")
+public class Logo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,19 +38,17 @@ public class Banner {
 	@JoinColumn(name = "user_id")
 	private User createdBy;
 
-	@Column(name = "clicks")
-	private Integer clicks = 0;
-
-	@Column(name = "hired_clicks")
-	private Integer hiredClicks;
+	@Column(name = "hired_date")
+	@Temporal(TemporalType.DATE)
+	private Date hiredDate;
 
 	@ManyToMany
 	@JoinTable(
-		name = "ranking_banner", 
-		joinColumns = @JoinColumn(name = "banner_id"), 
-		inverseJoinColumns = @JoinColumn(name = "ranking_id")
+		name = "ranking_item_logo", 
+		joinColumns = @JoinColumn(name = "logo_id"), 
+		inverseJoinColumns = @JoinColumn(name = "ranking_item_id")
 	)
-	private List<Ranking> rankings;
+	private List<RankingItem> rankingItems;
 
 	@Column(name = "active")
 	private Boolean active = Boolean.FALSE;
@@ -93,28 +93,20 @@ public class Banner {
 		this.createdBy = createdBy;
 	}
 
-	public Integer getClicks() {
-		return clicks;
+	public Date getHiredDate() {
+		return hiredDate;
 	}
 
-	public void setClicks(Integer clicks) {
-		this.clicks = clicks;
+	public void setHiredDate(Date hiredDate) {
+		this.hiredDate = hiredDate;
 	}
 
-	public Integer getHiredClicks() {
-		return hiredClicks;
+	public List<RankingItem> getRankingItems() {
+		return rankingItems;
 	}
 
-	public void setHiredClicks(Integer hiredClicks) {
-		this.hiredClicks = hiredClicks;
-	}
-
-	public List<Ranking> getRankings() {
-		return rankings;
-	}
-
-	public void setRankings(List<Ranking> rankings) {
-		this.rankings = rankings;
+	public void setRankingItems(List<RankingItem> rankingItems) {
+		this.rankingItems = rankingItems;
 	}
 
 	public Boolean getActive() {

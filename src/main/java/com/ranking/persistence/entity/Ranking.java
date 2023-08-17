@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -39,12 +38,7 @@ public class Ranking implements Comparable<Ranking> {
 	@OneToMany(mappedBy = "ranking", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RankingItem> items;
 
-	@ManyToMany
-	@JoinTable(
-		name = "ranking_banner", 
-		joinColumns = @JoinColumn(name = "ranking_id"), 
-		inverseJoinColumns = @JoinColumn(name = "banner_id")
-	)
+	@ManyToMany(mappedBy = "rankings")
 	private List<Banner> banners;
 
 	public Long getId() {
