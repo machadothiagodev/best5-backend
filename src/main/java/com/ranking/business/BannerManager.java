@@ -2,6 +2,7 @@ package com.ranking.business;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -68,6 +69,10 @@ public class BannerManager {
 		}
 
 		throw new EntityNotFoundException(String.format("Banner #%s does not exist", bannerId));
+	}
+
+	public BigDecimal getPrice(Integer clicks) {
+		return BigDecimal.valueOf(0.5 * clicks);
 	}
 
 }

@@ -51,7 +51,7 @@ public class Logo {
 	private List<RankingItem> rankingItems;
 
 	@Column(name = "active")
-	private Boolean active = Boolean.FALSE;
+	private Boolean active = Boolean.TRUE;
 
 	public Long getId() {
 		return id;

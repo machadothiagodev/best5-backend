@@ -51,7 +51,7 @@ public class Banner {
 	private List<Ranking> rankings;
 
 	@Column(name = "active")
-	private Boolean active = Boolean.FALSE;
+	private Boolean active = Boolean.TRUE;
 
 	public Long getId() {
 		return id;
