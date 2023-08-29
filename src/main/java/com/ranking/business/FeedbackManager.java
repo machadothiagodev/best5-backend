@@ -10,14 +10,15 @@ import com.ranking.presentation.dto.NewFeedbackDto;
 
 @Service
 public class FeedbackManager {
-	
+
+	@Autowired
 	private FeedbackMapper feedbackMapper;
 
 	@Autowired
 	private FeedbackRepository feedbackRepository;
-	
+
 	public Feedback createFeedback(NewFeedbackDto newFeedbackDto) {
 		return this.feedbackRepository.save(this.feedbackMapper.convertToEntity(newFeedbackDto));
 	}
-	
+
 }

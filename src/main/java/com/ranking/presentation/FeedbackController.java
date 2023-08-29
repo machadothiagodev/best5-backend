@@ -1,5 +1,7 @@
 package com.ranking.presentation;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +19,13 @@ public class FeedbackController {
 
 	@Autowired
 	private FeedbackMapper feedbackMapper;
-	
+
 	@Autowired
 	private FeedbackManager feedbackManager;
 
 	@PostMapping
-	private FeedbackDto createFeedback(@RequestBody NewFeedbackDto newFeedbackDto) {
+	public FeedbackDto createFeedback(@Valid @RequestBody NewFeedbackDto newFeedbackDto) {
 		return this.feedbackMapper.convertToDto(this.feedbackManager.createFeedback(newFeedbackDto));
 	}
+
 }

@@ -1,7 +1,10 @@
 package com.ranking.presentation.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class NewFeedbackDto {
 
+	@NotNull(message = "Field rating is required")
 	private Integer rating;
 	private String comment;
 
